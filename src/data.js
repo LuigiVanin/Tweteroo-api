@@ -1,4 +1,22 @@
 export default {
-    users: [],
-    tweets: [],
+    users: [
+        {
+            username: "bob",
+            avatar: "nothing",
+        },
+    ],
+    tweets: [
+        {
+            username: "bob",
+            tweet: "ola",
+        },
+        {
+            username: "bob",
+            tweet: "teste",
+        },
+        {
+            username: "bob",
+            tweet: "ola",
+        },
+    ],
 };

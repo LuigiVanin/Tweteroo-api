@@ -19,7 +19,9 @@ Uma API construida em node com a framework Express que simula o funcionamento do
 <img src="https://img.shields.io/badge/Git-E34F26?style=for-the-badge&logo=git&logoColor=white">
 <p>
 
-## Entre em contato
+### Entre em contato 📞
+
+<br>
 
 <p align="center">
 <a href="https://www.linkedin.com/in/luis-felipe-vanin-martins-5a5b38215">
