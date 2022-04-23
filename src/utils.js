@@ -5,7 +5,7 @@ const printRequest = (rota, data) => {
         chalk.green("\n[request resolve]") +
             chalk.bold.green(`[localhost:${process.env.PORT || 5000}/${rota}]`)
     );
-    console.log(chalk.yellow("-> data:"));
+    console.log(chalk.yellow("-> data retrivied:"));
     console.log(data);
 };
 

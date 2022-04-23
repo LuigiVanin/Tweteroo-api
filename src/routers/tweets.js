@@ -5,27 +5,35 @@ import { printRequest, MESSAGE } from "../utils.js";
 const tweets = Router();
 
 tweets.post("/", (req, res) => {
-    if (!req.body) return res.status(400).send(MESSAGE);
-    const { username, tweet } = req.body;
+    const username = req.headers["user"];
+    if (!(req.body && username)) return res.status(400).send(MESSAGE);
+    const { tweet } = req.body;
 
     if (!(username && tweet)) {
         return res.status(400).send(MESSAGE);
     }
 
     data.tweets.push({ username, tweet });
+
+    printRequest("/tweets[post]", { message: "Ok" });
     res.status(201).send({ message: "OK" });
 });
 
-// FIXME: problema de ordem no array
 tweets.get("/", (req, res) => {
-    let array = data.tweets.reverse().slice(0, 10);
-    printRequest("/tweets[get]", array.slice(0, 10));
+    const limit = req.query.page;
+    if (!limit || limit < 1) {
+        return res.status(400).send("Informe uma página válida!");
+    }
+    let tweetsArray = [...data.tweets]
+        .reverse()
+        .slice(10 * (limit - 1), limit * 10);
 
-    array = array.map((i) => {
+    tweetsArray = tweetsArray.map((i) => {
         let user = data.users.find((j) => (j.username === i.username ? 1 : 0));
         return { ...i, avatar: user.avatar };
     });
-    res.status(200).send(array);
+    printRequest("tweets[get]", tweetsArray);
+    res.status(200).send(tweetsArray);
 });
 
 tweets.get("/:username", (req, res) => {
@@ -39,6 +47,7 @@ tweets.get("/:username", (req, res) => {
             tweetsUser.push({ ...tweet, avatar: avatar.avatar });
         }
     }
+    printRequest("tweets/" + username, tweetsUser);
     res.status(200).send(tweetsUser);
 });
 
