@@ -1,12 +1,14 @@
 import { Router } from "express";
-import data from "../data.js";
-import { printRequest, MESSAGE } from "../utils.js";
+import data from "../data";
+import { printRequest, MESSAGE } from "../utils";
 
 const tweets = Router();
 
 tweets.post("/", (req, res) => {
-    const username = req.headers["user"];
-    if (!(req.body && username)) return res.status(400).send(MESSAGE);
+    const username = req.headers["user"] as string;
+    if (!req.body || !username) {
+        return res.status(400).send(MESSAGE);
+    }
     const { tweet } = req.body;
 
     if (!(username && tweet)) {
@@ -20,7 +22,7 @@ tweets.post("/", (req, res) => {
 });
 
 tweets.get("/", (req, res) => {
-    const limit = req.query.page;
+    const limit = Number(req.query.page);
     if (!limit || limit < 1) {
         return res.status(400).send("Informe uma página válida!");
     }
@@ -30,7 +32,7 @@ tweets.get("/", (req, res) => {
 
     tweetsArray = tweetsArray.map((i) => {
         let user = data.users.find((j) => (j.username === i.username ? 1 : 0));
-        return { ...i, avatar: user.avatar };
+        return { ...i, avatar: !user ? "no-photo" : user.avatar };
     });
     printRequest("tweets[get]", tweetsArray);
     res.status(200).send(tweetsArray);
@@ -42,6 +44,9 @@ tweets.get("/:username", (req, res) => {
     const avatar = data.users.find((user) => {
         return user.username === username;
     });
+    if (avatar === undefined) {
+        return res.status(401).send("usuário ainda não criado");
+    }
     for (const tweet of data.tweets) {
         if (tweet.username === username) {
             tweetsUser.push({ ...tweet, avatar: avatar.avatar });
