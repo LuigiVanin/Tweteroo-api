@@ -1,17 +1,4 @@
-interface UserData {
-    avatar: string;
-    username: string;
-}
-
-interface TweetData {
-    tweet: string;
-    username: string;
-}
-
-interface DataArray {
-    users: UserData[];
-    tweets: TweetData[];
-}
+import { DataArray } from "./interfaces/data";
 
 const data: DataArray = {
     users: [],

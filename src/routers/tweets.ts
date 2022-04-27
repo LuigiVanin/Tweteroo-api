@@ -1,17 +1,17 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import data from "../data";
 import { printRequest, MESSAGE } from "../utils";
 
 const tweets = Router();
 
-tweets.post("/", (req, res) => {
+tweets.post("/", (req: Request, res: Response) => {
     const username = req.headers["user"] as string;
     if (!req.body || !username) {
         return res.status(400).send(MESSAGE);
     }
     const { tweet } = req.body;
 
-    if (!(username && tweet)) {
+    if (!tweet) {
         return res.status(400).send(MESSAGE);
     }
 
@@ -21,7 +21,7 @@ tweets.post("/", (req, res) => {
     res.status(201).send({ message: "OK" });
 });
 
-tweets.get("/", (req, res) => {
+tweets.get("/", (req: Request, res: Response) => {
     const limit = Number(req.query.page);
     if (!limit || limit < 1) {
         return res.status(400).send("Informe uma página válida!");
@@ -38,13 +38,13 @@ tweets.get("/", (req, res) => {
     res.status(200).send(tweetsArray);
 });
 
-tweets.get("/:username", (req, res) => {
+tweets.get("/:username", (req: Request, res: Response) => {
     const tweetsUser = [];
     const { username } = req.params;
     const avatar = data.users.find((user) => {
         return user.username === username;
     });
-    if (avatar === undefined) {
+    if (!avatar) {
         return res.status(401).send("usuário ainda não criado");
     }
     for (const tweet of data.tweets) {
