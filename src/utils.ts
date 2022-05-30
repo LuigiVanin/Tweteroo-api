@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-const printRequest = (rota, data) => {
+const printRequest = (rota: string, data: object) => {
     console.log(
         chalk.green("\n[request resolve]") +
             chalk.bold.green(`[localhost:${process.env.PORT || 5000}/${rota}]`)

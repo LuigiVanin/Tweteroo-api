@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { user } from "./routers/user.js";
-import { tweets } from "./routers/tweets.js";
-import data from "./data.js";
+import { user } from "./routers/user";
+import { tweets } from "./routers/tweets";
+import data from "./data";
 
 const app = express();
 app.use(express.json());
